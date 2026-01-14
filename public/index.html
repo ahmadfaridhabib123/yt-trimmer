@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bibboy YTrimmer - Download & Potong Video YouTube</title>
+  <meta name="description"
+    content="Download dan potong video YouTube dengan mudah. Pilih kualitas, format, dan durasi yang diinginkan.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg,
+          #ef4444 0%,
+          #f97316 25%,
+          #eab308 50%,
+          #22c55e 75%,
+          #22c55e 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2s linear infinite;
+      transition: width 0.3s ease-out;
+    }
+
+    .video-preview-skeleton {
+      background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Radio button custom style */
+    .format-radio:checked+.format-label {
+      background: linear-gradient(135deg, #ef4444 0%, #ec4899 100%);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Quality select custom style */
+    .quality-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1.25rem;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50">
+  <!-- Header -->
+  <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
+              Bibboy YTrimmer
+            </h1>
+            <p class="text-sm text-gray-600">Download & potong video YouTube dengan mudah</p>
+          </div>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 text-sm text-gray-500">
+          <span class="flex items-center gap-1">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            v2.0
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Form Card -->
+    <div id="trim-form-container" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-5">
+        <h2 class="text-xl font-semibold text-white flex items-center gap-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" />
+          </svg>
+          Trim Video YouTube
+        </h2>
+        <p class="text-red-100 text-sm mt-1">Pilih bagian video yang ingin Anda unduh</p>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <!-- URL Input -->
+        <div>
+          <label for="url" class="block text-sm font-semibold text-gray-700 mb-2">
+            URL Video YouTube <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+            <input type="url" id="url" name="url" placeholder="https://www.youtube.com/watch?v=..."
+              class="w-full pl-11 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all text-gray-900" />
+          </div>
+        </div>
+
+        <!-- Video Preview Section -->
+        <div id="video-preview" class="hidden">
+          <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+            <div class="flex flex-col md:flex-row gap-4 p-4">
+              <!-- Thumbnail -->
+              <div class="w-full md:w-72 flex-shrink-0">
+                <div class="aspect-video rounded-lg overflow-hidden bg-gray-200 relative">
+                  <img id="video-thumbnail" src="" alt="Video Thumbnail" class="w-full h-full object-cover" />
+                  <div id="video-duration-badge"
+                    class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                    00:00
+                  </div>
+                </div>
+              </div>
+              <!-- Info -->
+              <div class="flex-1 min-w-0">
+                <h3 id="video-title" class="font-semibold text-gray-900 text-lg line-clamp-2 mb-2">Video Title</h3>
+                <p id="video-uploader" class="text-sm text-gray-600 mb-3">
+                  <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                  <span>Uploader</span>
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                    Video Ready
+                  </span>
+                  <span id="video-views-badge"
+                    class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                    </svg>
+                    <span id="video-views">0</span> views
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Preview Skeleton -->
+        <div id="video-preview-loading" class="hidden">
+          <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200 p-4">
+            <div class="flex flex-col md:flex-row gap-4">
+              <div class="w-full md:w-72 flex-shrink-0">
+                <div class="aspect-video rounded-lg video-preview-skeleton"></div>
+              </div>
+              <div class="flex-1 space-y-3">
+                <div class="h-6 w-3/4 video-preview-skeleton rounded"></div>
+                <div class="h-4 w-1/2 video-preview-skeleton rounded"></div>
+                <div class="h-8 w-1/3 video-preview-skeleton rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Format Selection -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3">
+            Format Output
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <input type="radio" name="format" id="format-mp4" value="mp4" checked class="format-radio sr-only" />
+              <label for="format-mp4"
+                class="format-label flex items-center justify-center gap-2 p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all hover:border-red-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <div class="text-left">
+                  <div class="font-semibold">Video MP4</div>
+                  <div class="text-xs opacity-75">Video dengan audio</div>
+                </div>
+              </label>
+            </div>
+            <div>
+              <input type="radio" name="format" id="format-mp3" value="mp3" class="format-radio sr-only" />
+              <label for="format-mp3"
+                class="format-label flex items-center justify-center gap-2 p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all hover:border-red-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+                <div class="text-left">
+                  <div class="font-semibold">Audio MP3</div>
+                  <div class="text-xs opacity-75">Audio saja</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality Selection -->
+        <div id="quality-container">
+          <label for="quality" class="block text-sm font-semibold text-gray-700 mb-2">
+            Kualitas Video
+          </label>
+          <select id="quality" name="quality"
+            class="quality-select w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all text-gray-900 bg-white">
+            <option value="360">360p - Hemat Data</option>
+            <option value="720" selected>720p - HD (Recommended)</option>
+            <option value="1080">1080p - Full HD</option>
+          </select>
+        </div>
+
+        <!-- Time Inputs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="start" class="block text-sm font-semibold text-gray-700 mb-2">
+              Waktu Mulai <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <input type="text" id="start" name="start" value="00:00:00" placeholder="HH:mm:ss"
+                class="w-full pl-11 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all font-mono text-lg" />
+            </div>
+            <p class="text-xs text-gray-500 mt-1.5">Contoh: 00:01:30 atau 1:30</p>
+          </div>
+
+          <div>
+            <label for="end" class="block text-sm font-semibold text-gray-700 mb-2">
+              Waktu Selesai <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <input type="text" id="end" name="end" value="00:00:00" placeholder="HH:mm:ss"
+                class="w-full pl-11 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all font-mono text-lg" />
+            </div>
+            <p class="text-xs text-gray-500 mt-1.5">Maksimal durasi: 10 menit</p>
+          </div>
+        </div>
+
+        <!-- Filename Input -->
+        <div>
+          <label for="filename" class="block text-sm font-semibold text-gray-700 mb-2">
+            Nama File (Opsional)
+          </label>
+          <input type="text" id="filename" name="filename" placeholder="Nama file output (tanpa ekstensi)"
+            class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
+          <p class="text-xs text-gray-500 mt-1.5">Jika kosong, akan dinamai "video-part"</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container" class="hidden">
+          <div class="bg-gray-100 rounded-xl p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span id="progress-status" class="text-sm font-medium text-gray-700">Memulai...</span>
+              <span id="progress-percent" class="text-sm font-bold text-red-600">0%</span>
+            </div>
+            <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div id="progress-bar" class="progress-bar h-full rounded-full transition-all duration-300"
+                style="width: 0%"></div>
+            </div>
+            <p id="progress-message" class="text-xs text-gray-500 mt-2 text-center">Mohon tunggu...</p>
+          </div>
+        </div>
+
+        <!-- Status Message -->
+        <div id="status-message" class="hidden rounded-xl p-4 flex items-start gap-3"></div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 pt-2">
+          <button type="button" id="submit-btn"
+            class="flex-1 bg-gradient-to-r from-red-600 to-pink-600 text-white px-6 py-4 rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 focus:ring-4 focus:ring-red-200 transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/25">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Download & Trim
+          </button>
+          <button type="button" id="reset-btn"
+            class="px-6 py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 transition-all">
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+        <div
+          class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-red-500/25">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 class="font-semibold text-gray-900 mb-2">Aman & Terproteksi</h3>
+        <p class="text-sm text-gray-600">Input divalidasi dan di-sanitasi untuk melindungi dari serangan</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+        <div
+          class="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-pink-500/25">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="font-semibold text-gray-900 mb-2">Progress Real-time</h3>
+        <p class="text-sm text-gray-600">Pantau progress download dan trim secara langsung</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+        <div
+          class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-blue-500/25">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+        </div>
+        <h3 class="font-semibold text-gray-900 mb-2">Download Langsung</h3>
+        <p class="text-sm text-gray-600">File langsung terdownload ke browser Anda</p>
+      </div>
+    </div>
+
+    <!-- CLI Info -->
+    <div class="mt-8 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 text-white shadow-xl">
+      <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+        <span class="text-green-400">$</span> Mode CLI
+      </h3>
+      <div class="space-y-2 text-sm font-mono">
+        <p class="text-gray-400"># Single cut</p>
+        <p class="text-green-400">npm run trim</p>
+        <p class="text-gray-400 mt-4"># Multiple cuts</p>
+        <p class="text-green-400">npm run trimall</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-12 border-t border-gray-200">
+    <p class="text-center text-sm text-gray-600">
+      Bibboy YTrimmer v2.0 • Powered by <strong>yt-dlp</strong> & <strong>ffmpeg</strong>
+    </p>
+  </footer>
+
+  <!-- Load main.js -->
+  <script src="./main.js?v=3"></script>
+</body>
+
+</html>
