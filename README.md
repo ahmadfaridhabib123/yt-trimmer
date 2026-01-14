@@ -213,5 +213,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🙏 Credits
 
-- Original project by [Mayk Brito](https://github.com/maykbrito)
+- Original project by [Bibboy](https://github.com/ahmadfaridhabib123)
 - Powered by [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/)
